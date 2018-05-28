@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { mockSteps } from './mocks/mock-steps'
+
 
 @Component({
   selector: 'app-root',
@@ -6,40 +8,45 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  step1Complete = false;
-  step2Complete = false;
-  step3Complete = false;
-  step4Complete = false;
-  step5Complete = false;
-  step6Complete = false;
-  step7Complete = false;
-  step8Complete = false;
-  step9Complete = false;
-  step10Complete = false;
-  step11Complete = false;
+
+  steps = mockSteps
 
   constructor() { }
 
   ngOnInit() {
 
-
     if (typeof(EventSource) !== 'undefined') {
       console.info('Http2 Supported.');
-      var source = new EventSource("http://localhost:8080/events");
-      source.onmessage = function(event) {
-        console.log(event);
+      var source = new EventSource("http://localhost:8081/events");
+      source.onmessage = (function(e) {
+        if (e.data !== "") {
+          const salesPipelineEvent = JSON.parse(e.data);
+          console.log(salesPipelineEvent);
+          console.log("this.steps", this.steps)
+          const completedStep = this.steps.find(
+            step => {
+              return step.name == salesPipelineEvent.event_name
+            }
+          );
+          if (completedStep !== undefined) {
+            completedStep.completed = true
+          }
+        }
         // document.getElementById("result").innerHTML += event.data + "<br>";
-      };
+      }).bind(this);
     } else {
       console.info('Http2 Not Supported.');
       // Sorry! No server-sent events support..
     }
 
     let currentStep = 0;
+    // For some reason we need this in order for angular to detect changes and update templates
+    // TODO - find a better way
     const interval = setInterval(() => {
 
       currentStep++;
-      this[`step${currentStep}Complete`] = true;
+      // Uncomment this to mock behavior of working app
+      // this.steps[currentStep]["completed"] = true;
 
       if (currentStep === 11) {
         clearInterval(interval);

@@ -1,55 +1,7 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<navigation-bar></navigation-bar>
 <mat-vertical-stepper>
-  <mat-step editable=false completed={{step1Complete}}  label="Placing an ad on Google/Facebook Ads">
-    Placed Ad on Facebook targeting mma enthusiasts
+
+  <mat-step *ngFor="let step of steps" completed={{step.completed}} label={{step.label}} editable=false>
+    {{step.description}}
   </mat-step>
-
-  <mat-step editable=false completed={{step2Complete}}  label="Prospect navigates to page with ad">
-    Prospect navigated to Facebook timeline where Ad was present
-  </mat-step>
-
-  <mat-step editable=false completed={{step3Complete}} label="Prospect sees ad (might be possible?)">
-
-  </mat-step>
-
-  <mat-step editable=false completed={{step4Complete}}  label="Prospect clicks on add">
-    Prospect clicked on ad after viewing for 5s
-  </mat-step>
-
-  <mat-step editable=false completed={{step5Complete}}  label="Prospect is taken to landing page">
-    Landing page loads in .5 seconds
-  </mat-step>
-
-  <mat-step editable=false completed={{step6Complete}}  label="... (read about our product, maybe some A/B testing here)">
-    Customer reads about GadgetX
-  </mat-step>
-
-  <mat-step editable=false completed={{step7Complete}}  label="User clicks on Buy/Order button">
-    Customer clicks "Buy GadgetX" button
-    Subtotal Amount: 7.00
-  </mat-step>
-
-  <mat-step editable=false completed={{step8Complete}}  label="User fills in personal details">
-    Male; Age 25; San Diego, CA
-    Taxes: 1.99
-    Shipping: Free
-    Grand Total: 8.99
-  </mat-step>
-
-  <mat-step editable=false completed={{step9Complete}}  label="User fills in credit card details">
-    Visa
-  </mat-step>
-
-  <mat-step editable=false completed={{step10Complete}}  label="User completes purchase">
-    Description....
-    Processing Fee: .30
-    Net Profit: 1.00
-  </mat-step>
-
-  <mat-step editable=false completed={{step11Complete}}  label="User posts our ads to their social media">
-    - Facebook post ids: [1, 2, 3]
-  </mat-step>
-
 
 </mat-vertical-stepper>
