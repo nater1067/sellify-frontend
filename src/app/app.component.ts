@@ -23,13 +23,21 @@ export class AppComponent implements OnInit {
           const salesPipelineEvent = JSON.parse(e.data);
           console.log(salesPipelineEvent);
           console.log("this.steps", this.steps)
-          const completedStep = this.steps.find(
+          let completedStep = this.steps.find(
             step => {
               return step.name == salesPipelineEvent.event_name
             }
           );
           if (completedStep !== undefined) {
-            completedStep.completed = true
+            completedStep.completed = true;
+            const keys = Object.keys(salesPipelineEvent.additionalInfo || {})
+            completedStep.additionalInfo = keys.map(key => ({
+              key,
+              value: salesPipelineEvent.additionalInfo[key]
+            }));
+            completedStep.prospectId = salesPipelineEvent.prospectId;
+            completedStep.productId = salesPipelineEvent.productId;
+            completedStep.reportedTime = salesPipelineEvent.reportedTime;
           }
         }
         // document.getElementById("result").innerHTML += event.data + "<br>";

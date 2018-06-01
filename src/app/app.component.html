@@ -1,7 +1,15 @@
-<mat-vertical-stepper>
+<mat-vertical-stepper linear=false>
+  <!-- https://material.angular.io/components/stepper/api -->
 
-  <mat-step *ngFor="let step of steps" completed={{step.completed}} label={{step.label}} editable=false>
-    {{step.description}}
+  <!-- Sets the blue bubble to left of label to the checkmark icon when a step is compleete -->
+  <ng-template matStepperIcon="edit">
+    <mat-icon>done</mat-icon>
+  </ng-template>
+
+  <mat-step *ngFor="let step of steps" completed={{step.completed}} label={{step.label}}>
+    <p *ngIf="(step.additionalInfo || []).length === 0">No additional information</p>
+    <p *ngFor="let info of step.additionalInfo">
+      <b>{{ info.key }}</b>: {{ info.value }}
+    </p>
   </mat-step>
-
 </mat-vertical-stepper>
