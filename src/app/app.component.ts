@@ -64,6 +64,14 @@ export class AppComponent implements AfterViewInit,  OnInit {
           );
           if (completedStep !== undefined) {
             completedStep.completed = true;
+            const keys = Object.keys(salesPipelineEvent.additionalInfo || {})
+            completedStep.additionalInfo = keys.map(key => ({
+              key,
+              value: salesPipelineEvent.additionalInfo[key]
+            }));
+            completedStep.prospectId = salesPipelineEvent.prospectId;
+            completedStep.productId = salesPipelineEvent.productId;
+            completedStep.reportedTime = salesPipelineEvent.reportedTime;
           }
         }
         // document.getElementById("result").innerHTML += event.data + "<br>";
