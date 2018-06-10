@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { mockSteps } from './mocks/mock-steps'
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import { mockSteps } from './mocks/mock-steps.js';
+import { Chart } from 'chart.js';
+import funnel from 'chartjs-funnel';
+
+Chart.plugins.register(funnel)
+
+// chartFunnelPlugin(Chart);
 
 
 @Component({
@@ -7,29 +13,57 @@ import { mockSteps } from './mocks/mock-steps'
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit,  OnInit {
 
-  steps = mockSteps
+  steps = mockSteps;
+  chart = [];
 
   constructor() { }
 
+  ngAfterViewInit() {
+    const myChart = new Chart(document.getElementById('canvas'), {
+      type: 'funnel',
+      data: {
+        datasets: [{
+          data: [30, 60, 90],
+          backgroundColor: [
+            "#FF6384",
+            "#36A2EB",
+            "#FFCE56"
+          ],
+          hoverBackgroundColor: [
+            "#FF6384",
+            "#36A2EB",
+            "#FFCE56"
+          ]
+        }],
+        labels: [
+          "Red",
+          "Blue",
+          "Yellow"
+        ]
+      }
+    });
+
+    this.chart = myChart;
+  }
   ngOnInit() {
 
     if (typeof(EventSource) !== 'undefined') {
       console.info('Http2 Supported.');
-      var source = new EventSource("http://localhost:8081/events");
+      const source = new EventSource('http://localhost:8081/events');
       source.onmessage = (function(e) {
-        if (e.data !== "") {
+        if (e.data !== '') {
           const salesPipelineEvent = JSON.parse(e.data);
           console.log(salesPipelineEvent);
-          console.log("this.steps", this.steps)
+          console.log('this.steps', this.steps);
           const completedStep = this.steps.find(
             step => {
-              return step.name == salesPipelineEvent.event_name
+              return step.name == salesPipelineEvent.event_name;
             }
           );
           if (completedStep !== undefined) {
-            completedStep.completed = true
+            completedStep.completed = true;
           }
         }
         // document.getElementById("result").innerHTML += event.data + "<br>";

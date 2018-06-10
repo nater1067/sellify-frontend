@@ -5,3 +5,6 @@
   </mat-step>
 
 </mat-vertical-stepper>
+<div *ngIf="chart">
+  <canvas id="canvas">{{ chart }}</canvas>
+</div>
